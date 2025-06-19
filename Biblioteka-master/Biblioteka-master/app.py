@@ -78,7 +78,7 @@ def index():
 def register():
     if request.method == 'POST':
         username = request.form['username']
-        password = request.form['password']  # W praktyce haszuj hasła
+        password = request.form['password']  # haszowanie hasła
         email = request.form['email']
         conn = get_db()
         try:
