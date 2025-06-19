@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head><title>Moja Biblioteka</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
+
+
+</head>
+<body>
+<div class="navbar">
+  <div class="brand">Moja Biblioteka</div>
+  <form method="GET" action="{{ url_for('logout') }}">
+  <button type="submit" class="logout-btn">Wyloguj się</button>
+  </form>
+</div>
+<h2>Witaj, {{ session.username }}!</h2>
+
+
+<h3>Lista książek</h3>
+<ul>
+{% for book in books %}
+  <li>{{ book.title }} -
+    {% if book.available %}
+      <a href="{{ url_for('borrow', book_id=book.id) }}">Wypożycz</a>
+    {% else %}
+      Wypożyczona
+    {% endif %}
+  </li>
+{% endfor %}
+</ul>
+
+<h3>Moje wypożyczenia</h3>
+<ul>
+{% if loans %}
+  {% for loan in loans %}
+    <li>{{ loan.title }} - oddać do: {{ loan.due_date }}</li>
+  {% endfor %}
+{% else %}
+  <li>Brak wypożyczonych książek.</li>
+{% endif %}
+</ul>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head><title>Logowanie</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
+
+
+</head>
+<body>
+<h2>Logowanie</h2>
+<form method="post">
+  Nazwa użytkownika:<br><input type="text" name="username" required><br>
+  Hasło:<br><input type="password" name="password" required><br>
+  <button type="submit">Zaloguj się</button>
+</form>
+<a href="{{ url_for('register') }}">Zarejestruj się</a>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul>{% for msg in messages %}<li>{{ msg }}</li>{% endfor %}</ul>
+  {% endif %}
+{% endwith %}
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+
+</body>
+</html>

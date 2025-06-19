@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Moja Biblioteka</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/png">
+
+
+</head>
+<body>
+    <h1>Lista książek</h1>
+    <ul>
+        {% for book in books %}
+            <li>
+                {{ book.title }} -
+                {% if book.available %}
+                    <a href="{{ url_for('borrow', book_id=book.id) }}">Wypożycz</a>
+                {% else %}
+                    Brak dostępności
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+
+</body>
+</html>
