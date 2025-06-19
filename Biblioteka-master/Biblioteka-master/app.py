@@ -13,7 +13,7 @@ def add_sample_books():
     conn = get_db()
     conn = get_db()
     count = conn.execute('SELECT COUNT(*) FROM books').fetchone()[0]
-    if count == 0:  # dodaj książki tylko jeśli tabela jest pusta
+    if count == 0:  # lista książek
         sample_books = [
             ('Harry Potter', 'J.K. Rowling', 1),
             ('Władca Pierścieni', 'J.R.R. Tolkien', 1),
@@ -34,7 +34,7 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
-# Inicjalizacja bazy - tworzymy tabele jeśli nie istnieją
+# baza - tabele
 def init_db():
     conn = get_db()
     c = conn.cursor()
@@ -119,9 +119,9 @@ def dashboard():
         return redirect(url_for('login'))
     user_id = session['user_id']
     conn = get_db()
-    # Pobieramy wszystkie książki z dostępnością
+    # Pobieranie wszystkich książek z dostępnością
     books = conn.execute('SELECT * FROM books').fetchall()
-    # Pobieramy książki wypożyczone przez użytkownika wraz z datą zwrotu
+    # książki wypożyczone przez użytkownika z datą zwrotu
     loans = conn.execute('''
         SELECT books.title, loans.due_date FROM loans
         JOIN books ON loans.book_id = books.id
@@ -150,5 +150,5 @@ def borrow(book_id):
 
 if __name__ == '__main__':
     init_db()
-    add_sample_books()  # dodaj przykładowe książki
+    add_sample_books()  # przykładowe książki
     app.run(debug=True)
