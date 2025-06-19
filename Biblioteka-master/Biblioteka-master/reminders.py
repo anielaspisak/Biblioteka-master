@@ -5,7 +5,7 @@ from email.mime.text import MIMEText
 
 DATABASE = 'database.db'
 
-# Konfiguracja SMTP - uzupełnij swoimi danymi serwera
+# Konfiguracja SMTP
 SMTP_SERVER = 'smtp.gmail.com'
 SMTP_PORT = 587
 EMAIL_USER = 'sidzinska.menelownia4@gmail.com'       # Twój email do logowania na SMTP
@@ -36,7 +36,7 @@ def send_reminders():
     conn = get_db()
     tomorrow = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
     print(f"Sprawdzam datę: {tomorrow}")
-    # Pobierz wypożyczenia, które mają termin zwrotu jutro wraz z danymi użytkownika
+    # Pobieranie wypożyczenia, które mają termin zwrotu jutro z danymi użytkownika
     loans = conn.execute('''
         SELECT users.email, users.username, books.title, loans.due_date
         FROM loans
@@ -45,7 +45,7 @@ def send_reminders():
         WHERE loans.due_date = ?
     ''', (tomorrow,)).fetchall()
     print(f"Pobrano {len(loans)} rekordów z wypożyczeniami do zwrotu jutro")
-    # Grupujemy wypożyczenia po użytkowniku, żeby wysłać 1 mail z listą książek
+    # wypożyczenia po użytkowniku, żeby wysłać 1 mail z listą książek
     reminders = {}
     for loan in loans:
         email = loan['email']
@@ -58,7 +58,7 @@ def send_reminders():
             }
         reminders[email]['books'].append((loan['title'], loan['due_date']))
 
-    # Wysyłamy maila do każdego użytkownika
+    # wysłanie maila do każdego użytkownika
     for email, data in reminders.items():
         username = data['username']
         books_list = "\n".join([f"- {title} do {due_date}" for title, due_date in data['books']])
